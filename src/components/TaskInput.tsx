@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./TaskInput.css";
 
 type TaskInputProps = {
   onAddTask: (text: string) => void;
@@ -17,7 +18,7 @@ function TaskInput(props: TaskInputProps) {
   };
 
   return (
-    <div>
+    <div className="task-input">
       <input
         type="text"
         placeholder="Enter a new task"

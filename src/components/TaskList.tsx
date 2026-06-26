@@ -1,4 +1,5 @@
 import TaskCard from "./TaskCard";
+import EmptyState from "./EmptyState";
 
 type Task= {
   id: number;
@@ -8,18 +9,27 @@ type Task= {
 
 type TaskListProps = {
   tasks: Task[];
+  onDeleteTask: (id: number) => void;
+  onToggleTask: (id: number) => void;
 };
 
 function TaskList(props: TaskListProps) {
-  return (
-    <ul>
-      {props.tasks.map((task) => (
-        <li key={task.id}>
-          <TaskCard text={task.text} />
-        </li>
-      ))}
-    </ul>
-  );
+    if (props.tasks.length === 0) {
+        return <EmptyState />;
+    }
+
+    return (
+        <ul>
+            {props.tasks.map((task) => (
+                <TaskCard
+                    key={task.id}
+                    task={task}
+                    onDeleteTask={props.onDeleteTask}
+                    onToggleTask={props.onToggleTask}
+                />
+            ))}
+        </ul>
+    );
 }
 
 export default TaskList;

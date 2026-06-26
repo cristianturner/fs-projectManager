@@ -1,0 +1,62 @@
+.task-input {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.task-input input {
+  flex: 1;
+  padding: 14px 18px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.task-input input::placeholder {
+  color: var(--text-secondary);
+}
+
+.task-input input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.task-input button {
+  padding: 14px 22px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(
+    90deg,
+    var(--primary),
+    var(--secondary)
+  );
+  transition: all 0.3s ease;
+}
+
+.task-input button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.35);
+}
+
+.task-input button:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 600px) {
+  .task-input {
+    flex-direction: column;
+  }
+
+  .task-input button {
+    width: 100%;
+  }
+}
