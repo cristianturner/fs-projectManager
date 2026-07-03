@@ -1,6 +1,10 @@
+const { PrismaClient } = require("@prisma/client");
+
 const express = require("express");
 const app = express();
 const PORT = 3000;
+
+const prisma = new PrismaClient();
 
 app.use(express.json());
 
@@ -20,9 +24,12 @@ app.get("/", (req: any, res: any) => {
   res.send("Backend is working!");
 });
 
-app.get("/tasks", (req: any, res: any) => {
-  res.json(tasks);
+// PRISMA CHANGE: GET /tasks now reads from PostgreSQL instead of the array
+app.get("/tasks", async (req: any, res: any) => {
+    const tasksFromDatabase = await prisma.task.findMany();
+    res.json(tasksFromDatabase);
 });
+
 
 app.post("/tasks", (req: any, res: any) => {
   const { text } = req.body;
