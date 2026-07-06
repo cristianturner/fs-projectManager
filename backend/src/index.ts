@@ -1,3 +1,6 @@
+const jwt = require("jsonwebtoken");
+const cors = require("cors");
+
 const { PrismaClient } = require("@prisma/client");
 
 const express = require("express");
@@ -6,6 +9,7 @@ const PORT = 3000;
 
 const prisma = new PrismaClient();
 
+app.use(cors());
 app.use(express.json());
 
 type Task = {
@@ -20,6 +24,48 @@ const tasks: Task[] = [
   { id: 3, text: "Test path backend", completed: true },
 ];
 
+app.post("/login", (req: any, res: any) => {
+  const { email, password } = req.body || {};
+
+  if (email === "admin@test.com" && password === "123456") {
+    const token = jwt.sign(
+      { email: email }, 
+      
+      "secret_key", 
+      
+      { expiresIn: "1h" }
+    );
+    return res.json({
+       message: "Login successful",
+       token: token
+    });
+  }
+
+  res.status(401).json({ 
+    message: "Invalid credentials"
+   });
+});
+
+app.get("/profile", (req: any, res: any) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, "secret_key");
+    res.json({
+      message: "Protected profile data",
+      user: decoded
+    });
+  } catch (error) {
+    res.status(401).json({ message: "Invalid token" });
+  }
+});
+
 app.get("/", (req: any, res: any) => {
   res.send("Backend is working!");
 });
@@ -30,21 +76,20 @@ app.get("/tasks", async (req: any, res: any) => {
     res.json(tasksFromDatabase);
 });
 
-
-app.post("/tasks", (req: any, res: any) => {
-  const { text } = req.body;
+app.post("/tasks", async (req: any, res: any) => {
+  const { text } = req.body || {};
 
   if (!text || text.trim() === "") {
     return res.status(400).json({ message: "Task text is required" });
   }
 
-  const newTask: Task = {
-    id: Date.now(),
-    text,
-    completed: false
-  };
+  const newTask = await prisma.task.create({
+    data: {
+      text,
+      completed: false
+    }
+  });
 
-  tasks.push(newTask);
   res.status(201).json(newTask);
 });
 
