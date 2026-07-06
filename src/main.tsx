@@ -1,11 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./style.css";
 import Header from "./components/Header.tsx";
 import TaskInput from "./components/TaskInput.tsx";
 import TaskList from "./components/TaskList.tsx";
 import Footer from "./components/Footer.tsx";
+
+
 
 type Task = {
   id: number;
@@ -20,14 +22,26 @@ function App() {
     { id: 3, text: "Understand state", completed: true },
   ]);
 
-  const addTask = (text: string) => {
-    const newTask: Task = {
-      id: Date.now(),
-      text: text,
-      completed: false
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const response = await fetch("http://localhost:3000/tasks");
+      const data = await response.json();
+      setTasks(data);
     };
-    setTasks([...tasks, newTask]);
-  }
+    fetchTasks();
+  }, []);
+
+  const addTask = async (text: string) => {
+    const response = await fetch("http://localhost:3000/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        text : text
+       }),
+    });
+  };
 
   const deleteTask = (id: number) => {
     const updatedTasks = tasks.filter((task) => task.id !== id);
