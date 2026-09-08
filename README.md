@@ -3,7 +3,7 @@
  
 [Descripción breve: Esta app nos ayuda a registrar tareas nuevas las cuales podemos marcarlas como pendientes, concluidas, tambien tiene estadisticas de cuantas pendientes y concluidas se tiene, ademas de un CRUD basico para las acciones correspondientes.]
  
-<!-- BADGE_CI -->
+[![CI](https://github.com/cristianturner/fs-projectManager/actions/workflows/ci.yml/badge.svg)](https://github.com/cristianturner/fs-projectManager/actions/workflows/ci.yml)
  
 ## 🚀 Instalación local
  
