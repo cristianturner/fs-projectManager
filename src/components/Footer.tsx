@@ -12,6 +12,6 @@ function Footer(props: FooterProps) {
       <p>Pending tasks: {props.pending}</p>
     </footer>
   );
-
+}
 
 export default Footer;
