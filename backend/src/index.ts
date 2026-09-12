@@ -1,10 +1,8 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const cors = require("cors");
-
-const { PrismaClient } = require("@prisma/client");
-
-const express = require("express");
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import cors from "cors";
+import { PrismaClient } from "@prisma/client";
+import express from "express";
 const app = express();
 const PORT = 3000;
 
@@ -183,6 +181,9 @@ app.delete("/tasks/:id", (req: any, res: any) => {
     });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+//module.exports = app;
+export default app;
+
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}`);
+// });
