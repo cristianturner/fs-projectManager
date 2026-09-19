@@ -81,7 +81,8 @@ app.post("/login", async (req: any, res: any) => {
 
   const token = jwt.sign(
     { id: user.id, email: user.email },
-    "secret_key",
+    //"secret_key",
+    process.env.JWT_SECRET!,
     { expiresIn: "1h" }
   );
 
@@ -106,7 +107,8 @@ app.get("/profile", (req: any, res: any) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, "secret_key");
+    //const decoded = jwt.verify(token, "secret_key");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
     res.json({
       message: "Protected profile data",
       user: decoded
