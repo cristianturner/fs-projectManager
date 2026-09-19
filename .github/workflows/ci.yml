@@ -72,6 +72,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm ci
+
       - name: Ejecutar pruebas con cobertura
         run: npx vitest run --coverage
 
@@ -92,9 +96,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Instalar Chromium
-        run: npx playwright install --with-deps chromium
+        
+      - name: Instalar navegadores Playwright
+        run: npx playwright install --with-deps
 
       - name: Ejecutar pruebas E2E
         run: npx playwright test
