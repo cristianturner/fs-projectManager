@@ -96,7 +96,7 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Instalar navegadores Playwright
         run: npx playwright install --with-deps
 
@@ -125,8 +125,10 @@ jobs:
         run: npx prisma generate
 
       - name: Validar migraciones
-        working-directory: backend
-        run: npx prisma validate
+          working-directory: backend
+          run: npx prisma validate
+          env:
+            DATABASE_URL: postgresql://user:password@localhost:5432/testdb
 
   deploy-staging:
     name: Deploy a Staging
