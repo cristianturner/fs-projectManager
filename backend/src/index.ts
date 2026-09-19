@@ -183,6 +183,10 @@ app.delete("/tasks/:id", (req: any, res: any) => {
     });
 });
 
+app.get("/health", (_req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
 //module.exports = app;
 export default app;
 
