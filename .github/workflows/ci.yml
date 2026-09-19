@@ -125,10 +125,10 @@ jobs:
         run: npx prisma generate
 
       - name: Validar migraciones
-          working-directory: backend
-          run: npx prisma validate
-          env:
-            DATABASE_URL: postgresql://user:password@localhost:5432/testdb
+        working-directory: backend
+        run: npx prisma validate
+        env:
+          DATABASE_URL: postgresql://user:password@localhost:5432/testdb
 
   deploy-staging:
     name: Deploy a Staging
