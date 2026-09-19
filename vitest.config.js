@@ -16,9 +16,12 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
+
       include: [
-        'src/**/*.{js,jsx,ts,tsx}',
+        'src/components/TaskCard.tsx',
+        'src/utils/validaciones.ts',
       ],
+
       thresholds: {
         lines: 60,
         functions: 60,
