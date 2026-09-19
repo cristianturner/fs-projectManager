@@ -1,10 +1,8 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const cors = require("cors");
-
-const { PrismaClient } = require("@prisma/client");
-
-const express = require("express");
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import cors from "cors";
+import { PrismaClient } from "@prisma/client";
+import express from "express";
 const app = express();
 const PORT = 3000;
 
@@ -83,7 +81,8 @@ app.post("/login", async (req: any, res: any) => {
 
   const token = jwt.sign(
     { id: user.id, email: user.email },
-    "secret_key",
+    //"secret_key",
+    process.env.JWT_SECRET!,
     { expiresIn: "1h" }
   );
 
@@ -108,7 +107,8 @@ app.get("/profile", (req: any, res: any) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, "secret_key");
+    //const decoded = jwt.verify(token, "secret_key");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
     res.json({
       message: "Protected profile data",
       user: decoded
@@ -183,6 +183,9 @@ app.delete("/tasks/:id", (req: any, res: any) => {
     });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+//module.exports = app;
+export default app;
+
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}`);
+// });
