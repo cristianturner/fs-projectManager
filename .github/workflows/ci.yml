@@ -99,8 +99,12 @@ jobs:
         working-directory: backend
         run: npm ci
 
-      - name: Ejecutar pruebas con cobertura
+      - name: Ejecutar pruebas frontend con cobertura
         run: npx vitest run --coverage
+      
+      - name: Ejecutar pruebas API
+        working-directory: backend
+        run: npm test
 
   e2e:
     name: Pruebas E2E
