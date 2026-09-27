@@ -8,6 +8,6 @@ describe("API de tareas", () => {
       .post("/tasks")
       .send({ text: "" });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(400);
   });
 });
