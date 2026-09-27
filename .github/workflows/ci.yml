@@ -173,6 +173,9 @@ jobs:
 
       - name: Aplicar migraciones Prisma
         run: npx prisma migrate deploy
+        
+      - name: Ejecutar seed de Prisma
+        run: npx prisma db seed
 
   deploy-staging:
     name: Deploy a Staging
