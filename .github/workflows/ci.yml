@@ -80,7 +80,8 @@ jobs:
   pruebas:
     name: Pruebas unitarias y cobertura
     runs-on: ubuntu-latest
-
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -131,8 +132,30 @@ jobs:
         run: npx playwright test
 
   migraciones:
-    name: Prisma - Validar migraciones
+    name: Migraciones y Seeds
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    env:
+      DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
 
     steps:
       - name: Checkout repository
@@ -142,20 +165,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
 
-      - name: Install backend dependencies
-        working-directory: backend
+      - name: Install dependencies
         run: npm ci
 
-      - name: Generate Prisma Client
-        working-directory: backend
-        run: npx prisma generate
-
-      - name: Validar migraciones
-        working-directory: backend
-        run: npx prisma validate
-        env:
-          DATABASE_URL: postgresql://user:password@localhost:5432/testdb
+      - name: Aplicar migraciones Prisma
+        run: npx prisma migrate deploy
+        
+      - name: Ejecutar seed de Prisma
+        run: npx prisma db seed
 
   deploy-staging:
     name: Deploy a Staging
